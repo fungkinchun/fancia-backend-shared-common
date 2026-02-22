@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto24
+    commands:
+      - export ARTIFACT_REPO_URL=https://${CODEARTIFACT_DOMAIN}-${ACCOUNT_ID}.d.codeartifact.${AWS_REGION}.amazonaws.com/maven
+      - export ARTIFACT_REPO_USER=aws
+      - export ARTIFACT_REPO_PASSWORD=$(aws codeartifact get-authorization-token --domain $CODEARTIFACT_DOMAIN --domain-owner $ACCOUNT_ID --region $AWS_REGION --query authorizationToken --output text)
+      - echo Installing dependencies...
+      - ./gradlew dependencies
+  pre_build:
+    commands:
+      - echo Cleaning project...
+      - ./gradlew clean
+  build:
+    commands:
+      - echo Building Kotlin project...
+      - ./gradlew build
+  post_build:
+    commands:
+      - echo Authenticating to CodeArtifact...
+      - export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain $CODEARTIFACT_DOMAIN --domain-owner $ACCOUNT_ID --region $AWS_REGION --query authorizationToken --output text)
+      - echo Publishing to CodeArtifact...
+      - ./gradlew publish
+      - echo Build and publish completed.
+artifacts:
+  files:
+    - build/libs/**/*.jar
