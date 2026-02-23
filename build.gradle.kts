@@ -79,14 +79,14 @@ publishing {
     }
     repositories {
         maven {
-            val domain = System.getenv("CODEARTIFACT_DOMAIN")
+            val domain = System.getenv("DOMAIN_NAME")
             val account = System.getenv("ACCOUNT_ID")
             val region = System.getenv("AWS_REGION")
-            val repo = System.getenv("CODEARTIFACT_REPO")
+            val repo = System.getenv("REPO_NAME")
             url = uri("https://$domain-$account.d.codeartifact.$region.amazonaws.com/maven/$repo/")
             credentials {
                 username = "aws"
-                password = System.getenv("CODEARTIFACT_AUTH_TOKEN")
+                password = System.getenv("ARTIFACT_REPO_PASSWORD")
             }
         }
     }
