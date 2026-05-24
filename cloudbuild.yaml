@@ -1,0 +1,25 @@
+steps:
+  - name: 'gradle:8.0-jdk21'
+    id: 'build'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Logging in to Docker Hub..."
+        echo "$$DOCKER_HUB_TOKEN" | docker login --username "$$DOCKER_HUB_USER" --password-stdin
+        ./gradlew clean build --info --stacktrace
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'docker-push'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker build -t ${_PROJECT_NAME}-backend-${_REPO_NAME}:latest .
+        docker tag ${_PROJECT_NAME}-backend-${_REPO_NAME}:latest ${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_ARTIFACT_REPO}/${_PROJECT_NAME}-backend-${_REPO_NAME}:latest
+        docker push ${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_ARTIFACT_REPO}/${_PROJECT_NAME}-backend-${_REPO_NAME}:latest
+
+artifacts:
+  objects:
+    location: 'gs://${_PROJECT_NAME}-pipeline-artifact/${SHORT_SHA}/'
+    paths: ['build/libs/**/*.jar']
