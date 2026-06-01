@@ -1,4 +1,4 @@
-package com.fancia.backend.common.storage.core.exception
+package com.fancia.backend.shared.common.storage.core.exception
 
 import com.fancia.backend.shared.common.core.exception.DomainException
 

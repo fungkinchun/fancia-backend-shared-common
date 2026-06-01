@@ -1,4 +1,4 @@
-package com.fancia.backend.common.storage.core.dto
+package com.fancia.backend.shared.common.storage.core.dto
 
 import java.time.Instant
 

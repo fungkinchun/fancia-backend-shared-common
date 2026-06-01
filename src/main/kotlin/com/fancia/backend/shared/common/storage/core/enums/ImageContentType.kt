@@ -1,4 +1,4 @@
-package com.fancia.backend.common.storage.core.enums
+package com.fancia.backend.shared.common.storage.core.enums
 
 import com.fasterxml.jackson.annotation.JsonValue
 
