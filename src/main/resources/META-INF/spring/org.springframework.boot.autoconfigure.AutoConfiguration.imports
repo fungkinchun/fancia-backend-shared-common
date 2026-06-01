@@ -1,1 +1,2 @@
 com.fancia.backend.shared.common.config.AutoConfig
+com.fancia.backend.shared.common.storage.config.StorageAutoConfiguration
