@@ -1,4 +1,6 @@
-package com.fancia.backend.shared.common.core.exception
+package com.fancia.backend.shared.common.tag.core.exception
+
+import com.fancia.backend.shared.common.core.exception.DomainException
 
 class TagAlreadyExistsException(
     val name: String,

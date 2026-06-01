@@ -1,4 +1,4 @@
-package com.fancia.backend.shared.common.core.dto
+package com.fancia.backend.shared.common.tag.core.dto
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
