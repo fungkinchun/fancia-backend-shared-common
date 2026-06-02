@@ -13,7 +13,7 @@ import java.util.*
 
 @MappedSuperclass
 @SoftDelete(columnName = "deleted")
-class AbstractEntity {
+open class AbstractEntity {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     @GeneratedValue
