@@ -7,9 +7,9 @@ import java.util.UUID
 
 data class CreateCommentRequest(
     @field:NotNull
-    val targetId: UUID,
+    val targetId: UUID? = null,
     @field:NotNull
-    val authorUserId: UUID,
+    val authorUserId: UUID? = null,
     @field:NotBlank(message = "Comment body is required")
     @field:Size(max = 4000, message = "Comment must be at most 4000 characters")
     val body: String,
