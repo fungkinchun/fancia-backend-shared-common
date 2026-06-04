@@ -1,18 +1,10 @@
 package com.fancia.backend.shared.common.comment.core.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Embeddable
-import jakarta.persistence.EmbeddedId
-import jakarta.persistence.Entity
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.MapsId
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import java.io.Serializable
 import java.time.LocalDateTime
-import java.util.Objects
-import java.util.UUID
+import java.util.*
 
 @Embeddable
 data class CommentLikeId(
@@ -23,8 +15,8 @@ data class CommentLikeId(
 ) : Serializable {
     override fun equals(other: Any?): Boolean =
         other is CommentLikeId &&
-            other.commentId == commentId &&
-            other.userId == userId
+                other.commentId == commentId &&
+                other.userId == userId
 
     override fun hashCode(): Int = Objects.hash(commentId, userId)
 }

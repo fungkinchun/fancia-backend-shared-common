@@ -1,16 +1,8 @@
 package com.fancia.backend.shared.common.comment.core.entity
 
 import com.fancia.backend.shared.common.core.entity.AbstractEntity
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Index
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
-import jakarta.persistence.OrderBy
-import jakarta.persistence.Table
-import java.util.UUID
+import jakarta.persistence.*
+import java.util.*
 
 @Entity
 @Table(name = "comments")
@@ -22,6 +14,8 @@ class Comment(
     @ManyToOne
     @JoinColumn(name = "parent_id")
     var parent: Comment? = null,
+    @Column(name = "post_id")
+    var postId: UUID? = null,
     @Column(nullable = false, length = 4000)
     var body: String,
 ) : AbstractEntity() {

@@ -1,7 +1,7 @@
 package com.fancia.backend.shared.common.comment.core.exception
 
 import com.fancia.backend.shared.common.core.exception.DomainException
-import java.util.UUID
+import java.util.*
 
 class CommentNotFoundException(
     val commentId: UUID,
