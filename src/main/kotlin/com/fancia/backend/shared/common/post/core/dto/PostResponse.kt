@@ -9,5 +9,9 @@ data class PostResponse(
     val authorUserId: UUID,
     val body: String?,
     val media: List<PostMediaResponse>,
+    val isFeatured: Boolean,
+    val isPinned: Boolean,
+    val likeCount: Long = 0,
+    val likedByCurrentUser: Boolean = false,
     val createdAt: LocalDateTime?,
 )

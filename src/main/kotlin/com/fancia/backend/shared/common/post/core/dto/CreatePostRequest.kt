@@ -14,4 +14,6 @@ data class CreatePostRequest(
     val body: String? = null,
     @field:Valid
     val media: List<PostMediaItem> = emptyList(),
+    val isFeatured: Boolean = false,
+    val isPinned: Boolean = false,
 )
