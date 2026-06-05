@@ -16,5 +16,5 @@ class Post(
 ) : AbstractEntity() {
     @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
     @OrderBy("sortOrder ASC")
-    val media: MutableList<PostMedia> = mutableListOf()
+    var media: MutableList<PostMedia> = mutableListOf()
 }
