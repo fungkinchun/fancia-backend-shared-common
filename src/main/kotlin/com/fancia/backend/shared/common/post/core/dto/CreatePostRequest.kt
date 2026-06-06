@@ -1,6 +1,5 @@
 package com.fancia.backend.shared.common.post.core.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -15,8 +14,6 @@ data class CreatePostRequest(
     val body: String? = null,
     @field:Valid
     val media: List<PostMediaItem> = emptyList(),
-    @JsonProperty("isFeatured")
-    val isFeatured: Boolean = false,
-    @JsonProperty("isPinned")
-    val isPinned: Boolean = false,
+    val featured: Boolean = false,
+    val pinned: Boolean = false,
 )
