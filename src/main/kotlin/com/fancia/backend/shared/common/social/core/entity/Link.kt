@@ -1,6 +1,6 @@
-package com.fancia.backend.shared.common.core.entity
+package com.fancia.backend.shared.common.social.core.entity
 
-import com.fancia.backend.shared.common.core.enums.LinkType
+import com.fancia.backend.shared.common.social.core.enums.LinkType
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 import jakarta.persistence.EnumType

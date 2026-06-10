@@ -1,6 +1,6 @@
-package com.fancia.backend.shared.common.core.dto
+package com.fancia.backend.shared.common.social.core.dto
 
-import com.fancia.backend.shared.common.core.enums.LinkType
+import com.fancia.backend.shared.common.social.core.enums.LinkType
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size

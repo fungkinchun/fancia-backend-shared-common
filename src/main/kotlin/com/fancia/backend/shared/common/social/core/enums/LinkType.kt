@@ -1,4 +1,4 @@
-package com.fancia.backend.shared.common.core.enums
+package com.fancia.backend.shared.common.social.core.enums
 
 enum class LinkType {
     WEBSITE,
