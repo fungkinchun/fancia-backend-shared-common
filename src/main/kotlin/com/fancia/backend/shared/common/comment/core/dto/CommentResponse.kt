@@ -6,7 +6,6 @@ import java.util.*
 data class CommentResponse(
     val id: UUID,
     val targetId: UUID,
-    val postId: UUID?,
     val authorUserId: UUID,
     val parentId: UUID?,
     val body: String,
