@@ -7,7 +7,6 @@ data class CommentResponse(
     val id: UUID,
     val targetId: UUID,
     val authorUserId: UUID,
-    val parentId: UUID?,
     val body: String,
     val createdAt: LocalDateTime?,
     val likeCount: Long = 0,

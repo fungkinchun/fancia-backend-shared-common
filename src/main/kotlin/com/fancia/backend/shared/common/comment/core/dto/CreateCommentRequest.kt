@@ -13,5 +13,4 @@ data class CreateCommentRequest(
     @field:NotBlank(message = "Comment body is required")
     @field:Size(max = 4000, message = "Comment must be at most 4000 characters")
     val body: String,
-    val parentId: UUID? = null,
 )
