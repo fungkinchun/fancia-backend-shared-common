@@ -12,6 +12,6 @@ data class Link(
     @Column(nullable = false, length = 50)
     var type: LinkType = LinkType.WEBSITE,
 
-    @Column(nullable = false, length = 2048)
+    @Column(nullable = false, length = 255)
     var url: String = "",
 )

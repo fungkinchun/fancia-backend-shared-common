@@ -8,4 +8,7 @@ enum class LinkType {
     LINKEDIN,
     YOUTUBE,
     TIKTOK,
+    ZOOM,
+    TEAMS,
+    GOOGLE_MEET,
 }
