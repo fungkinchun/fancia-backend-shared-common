@@ -4,4 +4,5 @@ enum class TagType {
     INTEREST,
     SKILL,
     TOPIC,
+    SYSTEM,
 }
