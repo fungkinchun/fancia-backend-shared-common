@@ -38,6 +38,7 @@ repositories {
 }
 
 dependencies {
+    api("org.crac:crac:1.5.0")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
