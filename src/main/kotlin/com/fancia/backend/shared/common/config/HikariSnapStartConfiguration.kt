@@ -1,5 +1,6 @@
 package com.fancia.backend.shared.common.config
 
+import com.zaxxer.hikari.HikariDataSource
 import org.crac.Context
 import org.crac.Core
 import org.crac.Resource
@@ -12,7 +13,6 @@ import org.springframework.boot.jdbc.HikariCheckpointRestoreLifecycle
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import com.zaxxer.hikari.HikariDataSource
 import javax.sql.DataSource
 
 @Configuration
@@ -40,13 +40,19 @@ class HikariSnapStartConfiguration {
     fun snapStartHikariDataSourcePostProcessor(): BeanPostProcessor =
         object : BeanPostProcessor {
             override fun postProcessAfterInitialization(bean: Any, beanName: String): Any {
-                if (bean is HikariDataSource) {
-                    bean.isAllowPoolSuspension = true
-                    if (bean.connectionTestQuery.isNullOrBlank()) {
-                        bean.connectionTestQuery = "SELECT 1"
-                    }
+                if (bean is HikariIdleResetDataSource) return bean
+                if (bean !is HikariDataSource) return bean
+
+                bean.isAllowPoolSuspension = true
+                if (bean.connectionTestQuery.isNullOrBlank()) {
+                    bean.connectionTestQuery = "SELECT 1"
                 }
-                return bean
+                // Fail fast on sockets closed during a Lambda freeze.
+                if (bean.validationTimeout > 3_000L) {
+                    bean.validationTimeout = 3_000L
+                }
+                log.info("Wrapping HikariDataSource '{}' for idle soft-evict on borrow", beanName)
+                return HikariIdleResetDataSource(bean)
             }
         }
 
@@ -85,7 +91,7 @@ private class HikariPoolCracResource(
     override fun afterRestore(context: Context<out Resource>) {
         log.info("SnapStart afterRestore: resetting Hikari pool")
         resetPool()
-        warmPoolWithRetry()
+        HikariDataSources.warmPool(dataSource)
     }
 
     private fun resetPool() {
@@ -98,36 +104,5 @@ private class HikariPoolCracResource(
             .onFailure { ex ->
                 log.warn("SnapStart afterRestore: pool start failed: {}", ex.message)
             }
-    }
-
-    private fun warmPoolWithRetry(maxAttempts: Int = 4) {
-        repeat(maxAttempts) { attempt ->
-            try {
-                dataSource.connection.use { connection ->
-                    connection.prepareStatement("SELECT 1").use { statement ->
-                        statement.execute()
-                    }
-                }
-                log.info(
-                    "SnapStart afterRestore: Hikari pool warm-up succeeded on attempt {}",
-                    attempt + 1,
-                )
-                return
-            } catch (ex: Exception) {
-                log.warn(
-                    "SnapStart afterRestore: warm-up attempt {} failed: {}",
-                    attempt + 1,
-                    ex.message,
-                )
-                HikariDataSources.softEvictConnections(dataSource)
-                if (attempt < maxAttempts - 1) {
-                    Thread.sleep(750L * (attempt + 1))
-                }
-            }
-        }
-        log.error(
-            "SnapStart afterRestore: Hikari pool warm-up failed after {} attempts",
-            maxAttempts,
-        )
     }
 }
