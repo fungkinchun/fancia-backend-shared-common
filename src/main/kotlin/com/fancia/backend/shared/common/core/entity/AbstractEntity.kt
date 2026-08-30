@@ -31,6 +31,6 @@ open class AbstractEntity {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
         other as AbstractEntity
-        return id == other.id
+        return id != null && id == other.id
     }
 }
