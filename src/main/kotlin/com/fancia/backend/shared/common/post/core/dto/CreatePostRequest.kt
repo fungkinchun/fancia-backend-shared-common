@@ -1,5 +1,6 @@
 package com.fancia.backend.shared.common.post.core.dto
 
+import com.fancia.backend.shared.common.post.core.enums.PostKind
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -16,4 +17,7 @@ data class CreatePostRequest(
     val media: List<PostMediaItem> = emptyList(),
     val featured: Boolean = false,
     val pinned: Boolean = false,
+    val kind: PostKind = PostKind.TEXT,
+    @field:Valid
+    val poll: CreatePollRequest? = null,
 )

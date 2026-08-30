@@ -1,5 +1,6 @@
 package com.fancia.backend.shared.common.post.core.dto
 
+import com.fancia.backend.shared.common.post.core.enums.PostKind
 import java.time.LocalDateTime
 import java.util.*
 
@@ -14,4 +15,6 @@ data class PostResponse(
     val likeCount: Long = 0,
     val likedByCurrentUser: Boolean = false,
     val createdAt: LocalDateTime?,
+    val kind: PostKind = PostKind.TEXT,
+    val poll: PollResponse? = null,
 )
