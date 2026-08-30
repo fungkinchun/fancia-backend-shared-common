@@ -1,6 +1,7 @@
 package com.fancia.backend.shared.common.post.core.dto
 
 import com.fancia.backend.shared.common.post.core.enums.PostKind
+import com.fancia.backend.shared.common.post.core.enums.PostStatus
 import java.time.LocalDateTime
 import java.util.*
 
@@ -10,8 +11,8 @@ data class PostResponse(
     val authorUserId: UUID,
     val body: String?,
     val media: List<PostMediaResponse>,
-    val featured: Boolean,
-    val pinned: Boolean,
+    val status: PostStatus = PostStatus.VISIBLE,
+    val expiredAt: LocalDateTime? = null,
     val likeCount: Long = 0,
     val likedByCurrentUser: Boolean = false,
     val createdAt: LocalDateTime?,
