@@ -10,10 +10,16 @@ data class CreatePostBody(
     @field:Size(max = 4000, message = "Post body must be at most 4000 characters")
     val body: String? = null,
     @field:Valid
-    val media: List<PostMediaItem> = emptyList(),
-    val status: PostStatus = PostStatus.VISIBLE,
+    val media: List<PostMediaItem>? = null,
+    val status: PostStatus? = null,
     val expiredAt: LocalDateTime? = null,
-    val kind: PostKind = PostKind.TEXT,
+    val kind: PostKind? = null,
     @field:Valid
     val poll: CreatePollRequest? = null,
-)
+) {
+    fun mediaOrEmpty(): List<PostMediaItem> = media.orEmpty()
+
+    fun statusOrDefault(): PostStatus = status ?: PostStatus.VISIBLE
+
+    fun kindOrDefault(): PostKind = kind ?: PostKind.TEXT
+}
