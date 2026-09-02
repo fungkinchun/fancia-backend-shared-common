@@ -47,7 +47,6 @@ class HikariSnapStartConfiguration {
                 if (bean.connectionTestQuery.isNullOrBlank()) {
                     bean.connectionTestQuery = "SELECT 1"
                 }
-                // Fail fast on sockets closed during a Lambda freeze.
                 if (bean.validationTimeout > 3_000L) {
                     bean.validationTimeout = 3_000L
                 }

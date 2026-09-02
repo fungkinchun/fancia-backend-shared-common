@@ -8,11 +8,6 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 import javax.sql.DataSource
 
-/**
- * After a long gap between borrows (e.g. Lambda freeze/thaw), soft-evicts stale
- * sockets so the next [getConnection] opens a fresh one. SnapStart CRaC handles
- * checkpoint/restore separately; this covers ordinary freezes between invokes.
- */
 internal class HikariIdleResetDataSource(
     target: HikariDataSource,
     private val idleGapNanos: Long = DEFAULT_IDLE_GAP_NANOS,
@@ -36,7 +31,6 @@ internal class HikariIdleResetDataSource(
         val gap = now - previous
         if (gap <= idleGapNanos) return
 
-        // Only one borrower should soft-evict per idle gap.
         if (!lastBorrowNanos.compareAndSet(previous, now)) return
 
         log.info(
