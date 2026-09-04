@@ -1,16 +1,16 @@
 package com.fancia.backend.shared.common.redis
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.StringRedisTemplate
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 import java.security.MessageDigest
 import java.time.Duration
 
 class RedisQueryCache(
     private val redis: StringRedisTemplate,
-    private val objectMapper: ObjectMapper,
+    private val jsonMapper: JsonMapper,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -23,7 +23,7 @@ class RedisQueryCache(
         try {
             val cached = redis.opsForValue().get(key)
             if (cached != null) {
-                return objectMapper.readValue(cached, type)
+                return jsonMapper.readValue(cached, type)
             }
         } catch (ex: Exception) {
             log.warn("Redis cache read failed key={}", key, ex)
@@ -31,7 +31,7 @@ class RedisQueryCache(
 
         val value = loader()
         try {
-            redis.opsForValue().set(key, objectMapper.writeValueAsString(value), ttl)
+            redis.opsForValue().set(key, jsonMapper.writeValueAsString(value), ttl)
         } catch (ex: Exception) {
             log.warn("Redis cache write failed key={}", key, ex)
         }

@@ -1,6 +1,5 @@
 package com.fancia.backend.shared.common.redis
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.lettuce.core.ClientOptions
 import io.lettuce.core.SocketOptions
 import org.slf4j.LoggerFactory
@@ -16,6 +15,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.StringRedisTemplate
+import tools.jackson.databind.json.JsonMapper
 import java.net.URI
 import java.time.Duration
 
@@ -92,8 +92,8 @@ class RedisQueryCacheAutoConfiguration(
     @ConditionalOnMissingBean(RedisQueryCache::class)
     fun redisQueryCache(
         stringRedisTemplate: StringRedisTemplate,
-        objectMapper: ObjectMapper,
-    ): RedisQueryCache = RedisQueryCache(stringRedisTemplate, objectMapper)
+        jsonMapper: JsonMapper,
+    ): RedisQueryCache = RedisQueryCache(stringRedisTemplate, jsonMapper)
 
     private fun normalizeRedisUrl(raw: String): String {
         val trimmed = raw.trim()

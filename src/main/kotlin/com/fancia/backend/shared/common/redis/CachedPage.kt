@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 
-data class CachedPage<T>(
+data class CachedPage<T : Any>(
     val content: List<T> = emptyList(),
     val totalElements: Long = 0,
     val number: Int = 0,
@@ -13,7 +13,7 @@ data class CachedPage<T>(
     fun toPage(pageable: Pageable): Page<T> = PageImpl(content, pageable, totalElements)
 
     companion object {
-        fun <T> from(page: Page<T>): CachedPage<T> =
+        fun <T : Any> from(page: Page<T>): CachedPage<T> =
             CachedPage(
                 content = page.content,
                 totalElements = page.totalElements,
