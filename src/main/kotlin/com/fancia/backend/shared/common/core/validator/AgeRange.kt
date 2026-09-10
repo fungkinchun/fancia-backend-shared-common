@@ -8,9 +8,9 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
 annotation class AgeRange(
-    val message: String = "Birth date is not valid",
+    val message: String = "You must be at least {min} years old",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<*>> = [],
-    val min: Int = 0,
+    val min: Int = 18,
     val max: Int = 120,
 )
