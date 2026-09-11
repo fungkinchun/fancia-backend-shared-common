@@ -1,6 +1,9 @@
 package com.fancia.backend.shared.common.config
 
 import org.slf4j.LoggerFactory
+import org.springframework.dao.DataAccessException
+import org.springframework.data.redis.connection.ReactiveRedisConnection
+import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
 import org.springframework.data.redis.connection.RedisConnection
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
@@ -10,7 +13,8 @@ import java.util.concurrent.atomic.AtomicLong
 internal class IdleResetRedisConnectionFactory(
     val target: LettuceConnectionFactory,
     private val idleGapNanos: Long = DEFAULT_IDLE_GAP_NANOS,
-) : RedisConnectionFactory by target {
+) : RedisConnectionFactory by target,
+    ReactiveRedisConnectionFactory by target {
     private val log = LoggerFactory.getLogger(javaClass)
     private val lastBorrowNanos = AtomicLong(System.nanoTime())
 
@@ -18,6 +22,14 @@ internal class IdleResetRedisConnectionFactory(
         resetIfIdle()
         return target.connection.also { markBorrowed() }
     }
+
+    override fun getReactiveConnection(): ReactiveRedisConnection {
+        resetIfIdle()
+        return target.reactiveConnection.also { markBorrowed() }
+    }
+
+    override fun translateExceptionIfPossible(ex: RuntimeException): DataAccessException? =
+        target.translateExceptionIfPossible(ex)
 
     fun resetSharedConnection(reason: String) {
         log.info("Resetting Lettuce shared connection ({})", reason)
