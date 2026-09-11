@@ -57,6 +57,8 @@ class RedisQueryCacheAutoConfiguration(
 
         val clientOptions =
             ClientOptions.builder()
+                .autoReconnect(true)
+                .pingBeforeActivateConnection(true)
                 .socketOptions(
                     SocketOptions.builder()
                         .connectTimeout(connectTimeout)
@@ -77,7 +79,13 @@ class RedisQueryCacheAutoConfiguration(
                 clientConfigBuilder.build()
             }
 
-        log.info("Configuring Redis query cache host={} port={} ssl={}", host, port, useSsl)
+        log.info("Configuring Redis host={} port={} ssl={}", host, port, useSsl)
+        if (!useSsl) {
+            log.warn(
+                "REDIS_URL is not rediss:// — Upstash requires TLS. " +
+                    "Use the TLS URL from the Upstash console (rediss://...).",
+            )
+        }
         return LettuceConnectionFactory(standalone, clientConfig).apply {
             afterPropertiesSet()
         }
