@@ -2,7 +2,6 @@ package com.fancia.backend.shared.common.security
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -27,12 +26,11 @@ import java.util.Base64
 @ConditionalOnMissingClass(
     "org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration",
 )
-@ConditionalOnExpression(
-    "T(org.springframework.util.StringUtils).hasText('\${JWT_SIGNING_PUBLIC_KEY_PEM:}')",
-)
 @ConditionalOnProperty(
-    prefix = "spring.security.oauth2.resourceserver.jwt",
-    name = ["issuer-uri"],
+    name = [
+        "JWT_SIGNING_PUBLIC_KEY_PEM",
+        "spring.security.oauth2.resourceserver.jwt.issuer-uri",
+    ],
 )
 class PemJwtDecoderConfiguration(
     @Value("\${JWT_SIGNING_PUBLIC_KEY_PEM}")
